@@ -9,7 +9,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 
 add_subdirectory(lib/SDL EXCLUDE_FROM_ALL)
 
-add_executable(snake main.cpp)
+add_executable(snake src/main.cpp src/Grid.cpp)
 
 target_link_libraries(snake PRIVATE SDL3::SDL3)
 

@@ -1,5 +1,8 @@
 #include <iostream>
+
 #include <SDL3/SDL.h>
+
+#include "Grid.hpp"
 
 /* Globals */
 #pragma region
@@ -32,6 +35,9 @@ int main(int, char**){
 bool init() {
     bool success{true};
 
+    Grid a;
+    a.render();
+
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         SDL_Log("SDL could not initialize! Error: %s\n", SDL_GetError());
         success = false;
@@ -49,7 +55,6 @@ bool init() {
 
 void enterMainLoop() {
     bool quitFlag{false};
-
 
     while (quitFlag == false) {
         processEvents(&quitFlag);
