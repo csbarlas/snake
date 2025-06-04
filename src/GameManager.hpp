@@ -5,6 +5,7 @@
 class GameManager {
 public:
     GameManager();
+    ~GameManager();
 
     bool init();
     void enterMainLoop();

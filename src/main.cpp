@@ -11,11 +11,6 @@ GameManager gameManager{};
 
 /* Function prototypes */
 #pragma region
-void processEvents(bool*);
-void update();
-void render();
-bool init();
-void enterMainLoop();
 #pragma endregion
 
 int main(int, char**){

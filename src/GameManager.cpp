@@ -6,6 +6,18 @@ GameManager::GameManager() {
     SDL_Log("GameManager initialized");
 }
 
+GameManager::~GameManager() {
+    if (gWindowRenderer) {
+        SDL_DestroyRenderer(gWindowRenderer);
+        gWindowRenderer = nullptr;
+    }
+
+    if (gWindow) {
+        SDL_DestroyWindow(gWindow);
+        gWindow = nullptr;
+    }
+}
+
 bool GameManager::init() {
     bool success{true};
 
