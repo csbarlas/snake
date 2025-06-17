@@ -1,14 +1,17 @@
+// 1. Own Header
 #include "GameManager.hpp"
 
+// 2. C++ Standard Library
+#include <vector>
+
+// 3. Third-party Libraries
 #include <SDL3/SDL.h>
+
+// 4. Project Headers
 
 namespace {
     constexpr int FRAME_RATE{60};
     constexpr Uint64 FRAME_TIME{(int)1e9 / FRAME_RATE};
-}
-
-GameManager::GameManager() {
-    SDL_Log("GameManager initialized");
 }
 
 GameManager::~GameManager() {
@@ -30,7 +33,7 @@ bool GameManager::init() {
         SDL_Log("SDL could not initialize! Error: %s\n", SDL_GetError());
         success = false;
     } else {
-        if (SDL_CreateWindowAndRenderer("Snake", 500, 500, SDL_WINDOW_RESIZABLE, &gWindow, &gWindowRenderer); gWindow == nullptr || gWindowRenderer == nullptr) {
+        if (SDL_CreateWindowAndRenderer("Snake", 500, 500, 0, &gWindow, &gWindowRenderer); gWindow == nullptr || gWindowRenderer == nullptr) {
             SDL_Log("SDL could not create window or renderer! Error: %s\n", SDL_GetError());
             success = false;
         }
@@ -52,8 +55,14 @@ void GameManager::enterMainLoop() {
             break;
         }
 
-        update();
-        render();
+        SDL_Log("Num game objects: %zu", currentGame.gameObjects.size());
+        for (auto& gameObject : currentGame.gameObjects) {
+            gameObject->update();
+        }
+        
+        for (auto& gameObject : currentGame.gameObjects) {
+            gameObject->render(gWindowRenderer);
+        }
 
         Uint64 frameTime{0};
         frameTime = SDL_GetTicksNS() - startTime;
@@ -61,17 +70,17 @@ void GameManager::enterMainLoop() {
         if (frameTime < FRAME_TIME) {
             Uint64 sleepTimeNS{FRAME_TIME - frameTime};
 
-            Uint64 targetTimeNS{SDL_GetTicksNS() + sleepTimeNS};
-            // spin wait, not great for CPU
-            while (SDL_GetTicksNS() < targetTimeNS) { }
+            // spin wait, not great for CPU but more accurate
+            //Uint64 targetTimeNS{SDL_GetTicksNS() + sleepTimeNS};
+            //while (SDL_GetTicksNS() < targetTimeNS) { }
 
-            // Can yield CPU but incurs overhead
-            //SDL_DelayNS(sleepTimeNS);
+            // Yield CPU but incurs overhead
+            SDL_DelayNS(sleepTimeNS);
         }
 
         Uint64 totalFrameTimeNS{SDL_GetTicksNS() - startTime};
         double framesPerSecond{(double)1e9 / totalFrameTimeNS};
-        SDL_Log("FPS: %.2f", framesPerSecond);
+        //SDL_Log("FPS: %.2f", framesPerSecond);
     }
 }
 
