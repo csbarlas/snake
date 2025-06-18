@@ -14,6 +14,10 @@ namespace {
     constexpr Uint64 FRAME_TIME{(int)1e9 / FRAME_RATE};
 }
 
+GameManager::GameManager() {
+    SDL_Log("GameManager constructor called");
+}
+
 GameManager::~GameManager() {
     if (gWindowRenderer) {
         SDL_DestroyRenderer(gWindowRenderer);
