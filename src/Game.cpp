@@ -17,6 +17,6 @@ void DummyObject::render(SDL_Renderer* renderer) {
     SDL_Log("DummyObject render called");
 }
 
-void DummyObject::update() {
-    SDL_Log("DummyObject update called");
+void DummyObject::update(Uint64 gametick) {
+    SDL_Log("DummyObject update called with gametick: %llu", gametick);
 }

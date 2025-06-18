@@ -7,7 +7,7 @@
 class GameObject {
 public:
     virtual ~GameObject() = default;
-    virtual void update() = 0;
+    virtual void update(Uint64 gametick) = 0;
     virtual void render(SDL_Renderer* renderer) = 0;
 };
 
@@ -23,6 +23,6 @@ private:
 
 class DummyObject : public GameObject {
 public:
-    void update() override;
+    void update(Uint64 gametick) override;
     void render(SDL_Renderer* renderer) override;
 };

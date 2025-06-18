@@ -61,7 +61,7 @@ void GameManager::enterMainLoop() {
 
         SDL_Log("Num game objects: %zu", currentGame.gameObjects.size());
         for (auto& gameObject : currentGame.gameObjects) {
-            gameObject->update();
+            gameObject->update(SDL_GetTicks());
         }
         
         for (auto& gameObject : currentGame.gameObjects) {
