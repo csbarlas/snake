@@ -20,9 +20,3 @@ public:
 private:
     
 };
-
-class DummyObject : public GameObject {
-public:
-    void update(Uint64 gametick) override;
-    void render(SDL_Renderer* renderer) override;
-};
