@@ -4,17 +4,17 @@
 
 #include <SDL3/SDL.h>
 
-class GameObject {
-public:
-    virtual ~GameObject() = default;
-    virtual void update(Uint64 gametick) = 0;
-    virtual void render(SDL_Renderer* renderer) = 0;
-};
+#include "GameObject.hpp"
+#include "SquareGrid.hpp"
 
 class Game {
 public:
     Game();
     ~Game();
+    
+    SquareGrid grid;
+
+    // Will get rid of soon
     std::vector<std::unique_ptr<GameObject>> gameObjects;
 
 private:

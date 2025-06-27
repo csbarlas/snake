@@ -4,17 +4,15 @@
 
 /* File private constants */
 #pragma region
-namespace {
-    constexpr int ROW_COL_COUNT{10};
-}
+namespace { }
 #pragma endregion
 
 SquareGrid::SquareGrid(int cols) : colCount(cols) {
-    SDL_Log("init for Grid");
+    SDL_Log("init for Grid %dx%d", cols, cols);
 }
 
 SquareGrid::~SquareGrid() {
-    SDL_Log("destroy for Grid");
+    SDL_Log("deconstructor for Grid");
 }
 
 void SquareGrid::update(Uint64 gametick) {

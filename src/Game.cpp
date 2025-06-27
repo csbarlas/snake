@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 
-Game::Game() {
+Game::Game() : grid(6) {
     SDL_Log("Game constructor called");
     std::unique_ptr<GameObject> tempObj = std::make_unique<DummyObject>();
     gameObjects.push_back(std::move(tempObj));

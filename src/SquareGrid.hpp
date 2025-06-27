@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Game.hpp"
+#include "GameObject.hpp"
 
 class SquareGrid : public GameObject {
 public:
