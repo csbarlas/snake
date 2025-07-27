@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL3/SDL.h>
+#include <memory>
 
 #include "Game.hpp"
 
@@ -16,7 +17,7 @@ private:
     SDL_Window* gWindow{nullptr};
     SDL_Renderer* gWindowRenderer{nullptr};
     
-    Game currentGame;
+    std::unique_ptr<Game> currentGame;
 
     bool processEvents();
     void update();

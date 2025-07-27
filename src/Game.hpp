@@ -7,15 +7,20 @@
 #include "GameObject.hpp"
 #include "SquareGrid.hpp"
 
+enum class GameState {
+    Running,
+    Win,
+    Lost
+};
+
+
 class Game {
 public:
     Game();
     ~Game();
     
+    GameState state;
     SquareGrid grid;
-
-    // Will get rid of soon
-    std::vector<std::unique_ptr<GameObject>> gameObjects;
 
 private:
     

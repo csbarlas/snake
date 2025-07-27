@@ -48,7 +48,8 @@ bool GameManager::init() {
     return success;
 }
 
-void GameManager::enterMainLoop() { 
+void GameManager::enterMainLoop() {
+    currentGame = std::make_unique<Game>();
     bool quit{false};
 
     while (!quit) {
@@ -57,15 +58,6 @@ void GameManager::enterMainLoop() {
         bool shouldQuit{processEvents()};
         if (shouldQuit) {
             break;
-        }
-
-        SDL_Log("Num game objects: %zu", currentGame.gameObjects.size());
-        for (auto& gameObject : currentGame.gameObjects) {
-            gameObject->update(SDL_GetTicks());
-        }
-        
-        for (auto& gameObject : currentGame.gameObjects) {
-            gameObject->render(gWindowRenderer);
         }
 
         Uint64 frameTime{0};
