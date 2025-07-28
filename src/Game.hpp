@@ -10,7 +10,8 @@
 enum class GameState {
     Running,
     Win,
-    Lost
+    Lost,
+    ForceQuit
 };
 
 

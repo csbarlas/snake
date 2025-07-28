@@ -19,7 +19,7 @@ private:
     
     std::unique_ptr<Game> currentGame;
 
-    bool processEvents();
-    void update();
-    void render();
+    void processInputEvents();
+    void updateGameObjects();
+    void renderGameObjects(SDL_Renderer* renderer);
 };

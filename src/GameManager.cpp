@@ -12,6 +12,8 @@
 namespace {
     constexpr int FRAME_RATE{60};
     constexpr Uint64 FRAME_TIME{(int)1e9 / FRAME_RATE};
+    constexpr Uint16 INITIAL_WINDOW_SQUARE_SIZE{500};
+    constexpr Uint16 LOGICAL_WINDOW_SQUARE_SIZE{500};
 }
 
 GameManager::GameManager() {
@@ -37,12 +39,12 @@ bool GameManager::init() {
         SDL_Log("SDL could not initialize! Error: %s\n", SDL_GetError());
         success = false;
     } else {
-        if (SDL_CreateWindowAndRenderer("Snake", 500, 500, 0, &gWindow, &gWindowRenderer); gWindow == nullptr || gWindowRenderer == nullptr) {
+        if (SDL_CreateWindowAndRenderer("Snake", INITIAL_WINDOW_SQUARE_SIZE, INITIAL_WINDOW_SQUARE_SIZE, 0, &gWindow, &gWindowRenderer); gWindow == nullptr || gWindowRenderer == nullptr) {
             SDL_Log("SDL could not create window or renderer! Error: %s\n", SDL_GetError());
             success = false;
         }
 
-        SDL_SetRenderLogicalPresentation(gWindowRenderer, 500, 500, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+        SDL_SetRenderLogicalPresentation(gWindowRenderer, LOGICAL_WINDOW_SQUARE_SIZE, LOGICAL_WINDOW_SQUARE_SIZE, SDL_LOGICAL_PRESENTATION_LETTERBOX);
     }
 
     return success;
@@ -50,15 +52,13 @@ bool GameManager::init() {
 
 void GameManager::enterMainLoop() {
     currentGame = std::make_unique<Game>();
-    bool quit{false};
 
-    while (!quit) {
+    while (currentGame.get()->state == GameState::Running) {
         Uint64 startTime{SDL_GetTicksNS()};
 
-        bool shouldQuit{processEvents()};
-        if (shouldQuit) {
-            break;
-        }
+        processInputEvents();
+        updateGameObjects();
+        renderGameObjects(gWindowRenderer);
 
         Uint64 frameTime{0};
         frameTime = SDL_GetTicksNS() - startTime;
@@ -80,19 +80,26 @@ void GameManager::enterMainLoop() {
     }
 }
 
-bool GameManager::processEvents() {
+void GameManager::processInputEvents() {
     SDL_Event event;
     SDL_zero(event);
 
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_EVENT_QUIT) {
-            return true;
+            currentGame.get()->state = GameState::ForceQuit;
         }
     }
-
-    return false;
 }
 
-void GameManager::update() { }
+void GameManager::updateGameObjects() {
+    currentGame.get()->grid.update(SDL_GetTicks());
+}
 
-void GameManager::render() { }
+void GameManager::renderGameObjects(SDL_Renderer* renderer) {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_RenderClear(renderer);
+
+    currentGame.get()->grid.render(renderer);
+
+    SDL_RenderPresent(renderer);
+}
