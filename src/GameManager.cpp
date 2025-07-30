@@ -100,6 +100,7 @@ void GameManager::renderGameObjects(SDL_Renderer* renderer) {
     SDL_RenderClear(renderer);
 
     currentGame.get()->grid.render(renderer);
+    currentGame.get()->snake.render(renderer);
 
     SDL_RenderPresent(renderer);
 }

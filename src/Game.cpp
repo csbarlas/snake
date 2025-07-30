@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 
-Game::Game() : grid(6) {
+Game::Game() : grid(6), snake(&grid) {
     SDL_Log("Game constructor called");
 }
 

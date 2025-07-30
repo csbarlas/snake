@@ -54,3 +54,8 @@ void SquareGrid::render(SDL_Renderer* renderer) {
         SDL_RenderLine(renderer, colPos, 0, colPos, logicalHeight);
     }
 }
+
+void SquareGrid::logicalPositionForGridCoordinate(int gridX, int gridY, int* logicalPosX, int* logicalPosY) {
+    *logicalPosX = 250;
+    *logicalPosY = 250;
+}
