@@ -7,7 +7,7 @@
 
 #pragma endregion
 
-SquareGrid::SquareGrid(int cols) : colCount(cols) {
+SquareGrid::SquareGrid(int cols) : colCount(cols), gridSquareLogicalSideLength(0) {
     SDL_Log("constructor for Grid %dx%d", cols, cols);
 }
 
@@ -34,6 +34,12 @@ void SquareGrid::render(SDL_Renderer* renderer) {
     }
 
     int squareLogicalSideLength = logicalWidth / colCount;
+    if (squareLogicalSideLength != gridSquareLogicalSideLength) {
+        SDL_Log("Grid updated square side length from %d to %d", gridSquareLogicalSideLength, squareLogicalSideLength);
+        gridSquareLogicalSideLength = squareLogicalSideLength;
+    }
+
+
     // If the logical window size can not be cleanly split up between the column count, readjust
     if (logicalWidth % colCount != 0) {
         int remainder = logicalWidth % colCount;
@@ -55,7 +61,14 @@ void SquareGrid::render(SDL_Renderer* renderer) {
     }
 }
 
-void SquareGrid::logicalPositionForGridCoordinate(int gridX, int gridY, int* logicalPosX, int* logicalPosY) {
-    *logicalPosX = 250;
-    *logicalPosY = 250;
+void SquareGrid::logicalPositionForGridCoordinate(GridCoordinate coord, GridSquare* result) {
+    if (result == nullptr) return;
+    if (gridSquareLogicalSideLength == 0) return;
+
+    result->sideLength = gridSquareLogicalSideLength;
+
+    LogicalCoordinate topLeft;
+    topLeft.x = coord.x * gridSquareLogicalSideLength;
+    topLeft.y = coord.y * gridSquareLogicalSideLength;
+    result->topLeft = topLeft;
 }

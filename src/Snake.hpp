@@ -12,4 +12,6 @@ public:
     void render(SDL_Renderer* renderer) override;
 private:
     LogicalPositionProvider* positionProvider;
+    Uint64 lastGameTick;
+    GridCoordinate gridCoord;
 };

@@ -93,6 +93,7 @@ void GameManager::processInputEvents() {
 
 void GameManager::updateGameObjects() {
     currentGame.get()->grid.update(SDL_GetTicks());
+    currentGame.get()->snake.update(SDL_GetTicks());
 }
 
 void GameManager::renderGameObjects(SDL_Renderer* renderer) {
