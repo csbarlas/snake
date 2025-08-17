@@ -20,7 +20,7 @@ class Game {
 public:
     Game();
     ~Game();
-    
+
     GameState state;
     SquareGrid grid;
     Snake snake;

@@ -86,7 +86,25 @@ void GameManager::processInputEvents() {
 
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_EVENT_QUIT) {
-            currentGame.get()->state = GameState::ForceQuit;
+            currentGame->state = GameState::ForceQuit;
+        }
+        else if (event.type == SDL_EVENT_KEY_DOWN) {
+            switch (event.key.scancode) {
+                case SDL_SCANCODE_W:
+                    currentGame->snake.move(SnakeMoveDirection::Up);
+                    break;
+                case SDL_SCANCODE_S:
+                    currentGame->snake.move(SnakeMoveDirection::Down);
+                    break;
+                case SDL_SCANCODE_A:
+                    currentGame->snake.move(SnakeMoveDirection::Left);
+                    break;
+                case SDL_SCANCODE_D:
+                    currentGame->snake.move(SnakeMoveDirection::Right);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
