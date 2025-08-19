@@ -16,7 +16,7 @@ SquareGrid::~SquareGrid() {
 }
 
 void SquareGrid::update(Uint64 gametick) {
-    SDL_Log("Grid update called with gametick: %llu", gametick);
+    // SDL_Log("Grid update called with gametick: %llu", gametick);
 }
 
 void SquareGrid::render(SDL_Renderer* renderer) {

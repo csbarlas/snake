@@ -53,7 +53,7 @@ bool GameManager::init() {
 void GameManager::enterMainLoop() {
     currentGame = std::make_unique<Game>();
 
-    while (currentGame.get()->state == GameState::Running) {
+    while (currentGame->state == GameState::Running) {
         Uint64 startTime{SDL_GetTicksNS()};
 
         processInputEvents();
@@ -110,16 +110,20 @@ void GameManager::processInputEvents() {
 }
 
 void GameManager::updateGameObjects() {
-    currentGame.get()->grid.update(SDL_GetTicks());
-    currentGame.get()->snake.update(SDL_GetTicks());
+    currentGame->grid.update(SDL_GetTicks());
+    currentGame->snake.update(SDL_GetTicks());
+    // candy update?
+
+    // Detect collisions
+
 }
 
 void GameManager::renderGameObjects(SDL_Renderer* renderer) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
 
-    currentGame.get()->grid.render(renderer);
-    currentGame.get()->snake.render(renderer);
+    currentGame->grid.render(renderer);
+    currentGame->snake.render(renderer);
 
     SDL_RenderPresent(renderer);
 }

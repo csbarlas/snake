@@ -4,8 +4,12 @@
 
 #include <SDL3/SDL.h>
 
-Snake::Snake(LogicalPositionProvider* provider): positionProvider(provider), lastGameTick{0}, gridCoord{0, 0}, directionVector{ SnakeMoveDirection::Down } {
+Snake::Snake(LogicalPositionProvider* provider): positionProvider(provider), lastGameTick{0}, directionVector{ SnakeMoveDirection::Down } {
     SDL_Log("Initializing snake object");
+    for (int i = 0; i < 7; i++) {
+        GridCoordinate startingCoord{0, (unsigned int)i};
+        gridCoords.insert(gridCoords.begin(), startingCoord);
+    }
 }
 
 Snake::~Snake() {
@@ -14,6 +18,8 @@ Snake::~Snake() {
 
 void Snake::update(Uint64 gametick) {
     SDL_Log("Snake update called");
+
+    // Snake should update
     if (gametick - lastGameTick > 500) {
         int xVec = 0;
         if (directionVector == SnakeMoveDirection::Left || directionVector == SnakeMoveDirection::Right) {
@@ -25,9 +31,10 @@ void Snake::update(Uint64 gametick) {
             yVec = directionVector == SnakeMoveDirection::Up ? -1 : 1;
         }
 
-        GridCoordinate newCoord{gridCoord.x + xVec, gridCoord.y + yVec};
-        gridCoord = newCoord;
-        SDL_Log("Snake new coordinate is: (%d, %d)", newCoord.x, newCoord.y);
+        GridCoordinate snakeFront = gridCoords.front();
+        GridCoordinate newCoord{snakeFront.x + xVec, snakeFront.y + yVec};
+        gridCoords.insert(gridCoords.begin(), newCoord);
+        gridCoords.pop_back();
         lastGameTick = gametick;
     }
 }
@@ -35,19 +42,21 @@ void Snake::update(Uint64 gametick) {
 void Snake::render(SDL_Renderer* renderer) {
     SDL_Log("Snake render called");
 
-    GridSquare result;
-    positionProvider->logicalPositionForGridCoordinate(gridCoord, &result);
+    for (GridCoordinate coord : gridCoords) {
+        GridSquare result;
+        positionProvider->logicalPositionForGridCoordinate(coord, &result);
 
-    SDL_FRect drawRect;
-    drawRect.x = result.topLeft.x;
-    drawRect.y = result.topLeft.y;
-    drawRect.w = result.sideLength;
-    drawRect.h = result.sideLength;
+        SDL_FRect drawRect;
+        drawRect.x = result.topLeft.x;
+        drawRect.y = result.topLeft.y;
+        drawRect.w = result.sideLength;
+        drawRect.h = result.sideLength;
 
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
-    SDL_RenderFillRect(renderer, &drawRect);
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
+        SDL_RenderFillRect(renderer, &drawRect);
+    }
 
-    SDL_Log("Snake resolved top-left position: (%d, %d) with side length: %d", result.topLeft.x, result.topLeft.y, result.sideLength);
+    // SDL_Log("Snake resolved top-left position: (%d, %d) with side length: %d", result.topLeft.x, result.topLeft.y, result.sideLength);
 }
 
 void Snake::move(SnakeMoveDirection direction) {

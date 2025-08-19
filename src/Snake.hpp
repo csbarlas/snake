@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "GameObject.hpp"
 #include "LogicalPositionProvider.hpp"
 
@@ -15,12 +17,14 @@ public:
     Snake(LogicalPositionProvider* provider);
     ~Snake();
 
+    std::vector<GridCoordinate> gridCoords;
+
     void update(Uint64 gametick) override;
     void render(SDL_Renderer* renderer) override;
     void move(SnakeMoveDirection direction);
+
 private:
     LogicalPositionProvider* positionProvider;
     Uint64 lastGameTick;
-    GridCoordinate gridCoord;
     SnakeMoveDirection directionVector;
 };
