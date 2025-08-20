@@ -89,6 +89,10 @@ void GameManager::processInputEvents() {
             currentGame->state = GameState::ForceQuit;
         }
         else if (event.type == SDL_EVENT_KEY_DOWN) {
+            /* TODO: Do not allow certain inputs when moving in certain directions
+             * For example, if snake is moving down do not accept up input
+             */
+
             switch (event.key.scancode) {
                 case SDL_SCANCODE_W:
                     currentGame->snake.move(SnakeMoveDirection::Up);
@@ -115,7 +119,8 @@ void GameManager::updateGameObjects() {
     // candy update?
 
     // Detect collisions
-
+    checkSnakeCollidesWithWorldEdges();
+    checkSnakeCollidesWithSelf();
 }
 
 void GameManager::renderGameObjects(SDL_Renderer* renderer) {
@@ -126,4 +131,33 @@ void GameManager::renderGameObjects(SDL_Renderer* renderer) {
     currentGame->snake.render(renderer);
 
     SDL_RenderPresent(renderer);
+}
+
+void GameManager::checkSnakeCollidesWithWorldEdges() {
+    GridCoordinate snakeFront = currentGame->snake.gridCoords.front();
+    int colCount = currentGame->grid.colCount;
+    if (snakeFront.x < 0 || snakeFront.x >= colCount || snakeFront.y < 0 || snakeFront.y >= colCount) {
+        currentGame->snake.tempClear();
+    }
+}
+
+void GameManager::checkSnakeCollidesWithSelf() {
+    if (currentGame->snake.gridCoords.size() <= 1) { return; }
+
+    bool collidedWithSelf = false;
+    auto iter = currentGame->snake.gridCoords.begin();
+    GridCoordinate snakeFront = *iter;
+    iter++;
+    while (iter != currentGame->snake.gridCoords.end()) {
+        if (iter->x == snakeFront.x && iter->y == snakeFront.y) {
+            collidedWithSelf = true;
+            break;
+        }
+
+        iter++;
+    }
+
+    if (collidedWithSelf) {
+        currentGame->snake.tempClear();
+    }
 }

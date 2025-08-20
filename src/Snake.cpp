@@ -20,7 +20,7 @@ void Snake::update(Uint64 gametick) {
     SDL_Log("Snake update called");
 
     // Snake should update
-    if (gametick - lastGameTick > 500) {
+    if (gametick - lastGameTick > 250) {
         int xVec = 0;
         if (directionVector == SnakeMoveDirection::Left || directionVector == SnakeMoveDirection::Right) {
             xVec = directionVector == SnakeMoveDirection::Left ? -1 : 1;
@@ -61,4 +61,8 @@ void Snake::render(SDL_Renderer* renderer) {
 
 void Snake::move(SnakeMoveDirection direction) {
     directionVector = direction;
+}
+
+void Snake::tempClear() {
+    gridCoords.clear();
 }

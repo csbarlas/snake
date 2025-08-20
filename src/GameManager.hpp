@@ -22,4 +22,7 @@ private:
     void processInputEvents();
     void updateGameObjects();
     void renderGameObjects(SDL_Renderer* renderer);
+
+    void checkSnakeCollidesWithWorldEdges();
+    void checkSnakeCollidesWithSelf();
 };

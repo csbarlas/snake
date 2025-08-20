@@ -22,7 +22,7 @@ public:
     void update(Uint64 gametick) override;
     void render(SDL_Renderer* renderer) override;
     void move(SnakeMoveDirection direction);
-
+    void tempClear();
 private:
     LogicalPositionProvider* positionProvider;
     Uint64 lastGameTick;
