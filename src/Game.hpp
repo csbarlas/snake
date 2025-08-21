@@ -7,6 +7,7 @@
 #include "GameObject.hpp"
 #include "SquareGrid.hpp"
 #include "Snake.hpp"
+#include "Candy.h"
 
 enum class GameState {
     Running,
@@ -24,6 +25,7 @@ public:
     GameState state;
     SquareGrid grid;
     Snake snake;
+    Candy candy;
 
 private:
     

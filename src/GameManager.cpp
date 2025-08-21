@@ -52,6 +52,7 @@ bool GameManager::init() {
 
 void GameManager::enterMainLoop() {
     currentGame = std::make_unique<Game>();
+    currentGame->candy.randomizeLocation(currentGame->snake.gridCoords, currentGame->grid.colCount);
 
     while (currentGame->state == GameState::Running) {
         Uint64 startTime{SDL_GetTicksNS()};
@@ -116,7 +117,7 @@ void GameManager::processInputEvents() {
 void GameManager::updateGameObjects() {
     currentGame->grid.update(SDL_GetTicks());
     currentGame->snake.update(SDL_GetTicks());
-    // candy update?
+    currentGame->candy.update(SDL_GetTicks());
 
     // Detect collisions
     checkSnakeCollidesWithWorldEdges();
@@ -129,6 +130,7 @@ void GameManager::renderGameObjects(SDL_Renderer* renderer) {
 
     currentGame->grid.render(renderer);
     currentGame->snake.render(renderer);
+    currentGame->candy.render(renderer);
 
     SDL_RenderPresent(renderer);
 }
