@@ -18,13 +18,15 @@ public:
     ~Snake();
 
     std::vector<GridCoordinate> gridCoords;
+    SnakeMoveDirection directionVector;
 
     void update(Uint64 gametick) override;
     void render(SDL_Renderer* renderer) override;
     void move(SnakeMoveDirection direction);
     void tempClear();
+    void addToSnakeFront(GridCoordinate coord);
+    GridCoordinate nextCoordinateGivenDirection();
 private:
     LogicalPositionProvider* positionProvider;
     Uint64 lastGameTick;
-    SnakeMoveDirection directionVector;
 };

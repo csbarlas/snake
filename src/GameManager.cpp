@@ -116,12 +116,21 @@ void GameManager::processInputEvents() {
 
 void GameManager::updateGameObjects() {
     currentGame->grid.update(SDL_GetTicks());
-    currentGame->snake.update(SDL_GetTicks());
     currentGame->candy.update(SDL_GetTicks());
 
     // Detect collisions
-    checkSnakeCollidesWithWorldEdges();
     checkSnakeCollidesWithSelf();
+
+    // TODO: Look into why candy is being collected when snake is a space before the candy
+    if (checkSnakeWillCollideWithCandy()) {
+        GridCoordinate candyLoc = currentGame->candy.location;
+        currentGame->candy.randomizeLocation(currentGame->snake.gridCoords, currentGame->grid.colCount);
+        currentGame->snake.addToSnakeFront(candyLoc);
+    } else {
+        currentGame->snake.update(SDL_GetTicks());
+    }
+
+    checkSnakeCollidesWithWorldEdges();
 }
 
 void GameManager::renderGameObjects(SDL_Renderer* renderer) {
@@ -162,4 +171,16 @@ void GameManager::checkSnakeCollidesWithSelf() {
     if (collidedWithSelf) {
         currentGame->snake.tempClear();
     }
+}
+
+bool GameManager::checkSnakeWillCollideWithCandy() {
+    if (currentGame->snake.gridCoords.size() == 0) return false;
+
+    GridCoordinate nextCoord = currentGame->snake.nextCoordinateGivenDirection();
+    GridCoordinate candyLoc = currentGame->candy.location;
+    if (nextCoord.x == candyLoc.x && nextCoord.y == candyLoc.y) {
+        return true;
+    }
+
+    return false;
 }

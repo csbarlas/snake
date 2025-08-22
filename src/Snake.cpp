@@ -6,10 +6,8 @@
 
 Snake::Snake(LogicalPositionProvider* provider): positionProvider(provider), lastGameTick{0}, directionVector{ SnakeMoveDirection::Down } {
     SDL_Log("Initializing snake object");
-    for (int i = 0; i < 7; i++) {
-        GridCoordinate startingCoord{0, (unsigned int)i};
-        gridCoords.insert(gridCoords.begin(), startingCoord);
-    }
+    GridCoordinate startingCoord{0, 0};
+    gridCoords.insert(gridCoords.begin(), startingCoord);
 }
 
 Snake::~Snake() {
@@ -21,18 +19,7 @@ void Snake::update(Uint64 gametick) {
 
     // Snake should update
     if (gametick - lastGameTick > 250) {
-        int xVec = 0;
-        if (directionVector == SnakeMoveDirection::Left || directionVector == SnakeMoveDirection::Right) {
-            xVec = directionVector == SnakeMoveDirection::Left ? -1 : 1;
-        }
-
-        int yVec = 0;
-        if (directionVector == SnakeMoveDirection::Up || directionVector == SnakeMoveDirection::Down) {
-            yVec = directionVector == SnakeMoveDirection::Up ? -1 : 1;
-        }
-
-        GridCoordinate snakeFront = gridCoords.front();
-        GridCoordinate newCoord{snakeFront.x + xVec, snakeFront.y + yVec};
+        GridCoordinate newCoord = nextCoordinateGivenDirection();
         gridCoords.insert(gridCoords.begin(), newCoord);
         gridCoords.pop_back();
         lastGameTick = gametick;
@@ -65,4 +52,24 @@ void Snake::move(SnakeMoveDirection direction) {
 
 void Snake::tempClear() {
     gridCoords.clear();
+}
+
+void Snake::addToSnakeFront(GridCoordinate coord) {
+    gridCoords.insert(gridCoords.begin(), coord);
+}
+
+GridCoordinate Snake::nextCoordinateGivenDirection() {
+    int xVec = 0;
+    if (directionVector == SnakeMoveDirection::Left || directionVector == SnakeMoveDirection::Right) {
+        xVec = directionVector == SnakeMoveDirection::Left ? -1 : 1;
+    }
+
+    int yVec = 0;
+    if (directionVector == SnakeMoveDirection::Up || directionVector == SnakeMoveDirection::Down) {
+        yVec = directionVector == SnakeMoveDirection::Up ? -1 : 1;
+    }
+
+    GridCoordinate snakeFront = gridCoords.front();
+    GridCoordinate newCoord{snakeFront.x + xVec, snakeFront.y + yVec};
+    return newCoord;
 }

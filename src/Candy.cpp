@@ -14,17 +14,19 @@ void Candy::update(Uint64 gametick) {
 }
 
 void Candy::render(SDL_Renderer *renderer) {
-    GridSquare result;
-    provider->logicalPositionForGridCoordinate(location, &result);
+    if (!shouldHide) {
+        GridSquare result;
+        provider->logicalPositionForGridCoordinate(location, &result);
 
-    SDL_FRect drawRect;
-    drawRect.x = result.topLeft.x;
-    drawRect.y = result.topLeft.y;
-    drawRect.w = result.sideLength;
-    drawRect.h = result.sideLength;
+        SDL_FRect drawRect;
+        drawRect.x = result.topLeft.x;
+        drawRect.y = result.topLeft.y;
+        drawRect.w = result.sideLength;
+        drawRect.h = result.sideLength;
 
-    SDL_SetRenderDrawColor(renderer, 255, 215, 0, 0);
-    SDL_RenderFillRect(renderer, &drawRect);
+        SDL_SetRenderDrawColor(renderer, 255, 215, 0, 0);
+        SDL_RenderFillRect(renderer, &drawRect);
+    }
 }
 
 void Candy::randomizeLocation(std::vector<GridCoordinate> snakeCoords, int gridLimits) {
@@ -49,4 +51,8 @@ void Candy::randomizeLocation(std::vector<GridCoordinate> snakeCoords, int gridL
         location = GridCoordinate{randomX, randomY};
         foundNewEmptyLocation = true;
     }
+}
+
+void Candy::hide() {
+    shouldHide = true;
 }

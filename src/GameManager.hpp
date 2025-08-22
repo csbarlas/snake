@@ -25,4 +25,5 @@ private:
 
     void checkSnakeCollidesWithWorldEdges();
     void checkSnakeCollidesWithSelf();
+    bool checkSnakeWillCollideWithCandy();
 };

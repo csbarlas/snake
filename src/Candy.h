@@ -19,8 +19,10 @@ public:
     void update(Uint64 gametick) override;
     void render(SDL_Renderer* renderer) override;
     void randomizeLocation(std::vector<GridCoordinate> snakeCoords, int gridLimits);
+    void hide();
 private:
     LogicalPositionProvider* provider;
+    bool shouldHide{false};
 };
 
 #endif //SNAKE_CANDY_H
